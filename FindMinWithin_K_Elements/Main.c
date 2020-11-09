@@ -30,6 +30,7 @@ void InfoInput() {
 		number[currentNumber] = rand() % (MAXED - MINIM + 1) + MINIM;
 		printf_s("%d ", number[currentNumber]);
 	}
+	StackWorker(arraySize, lengthOfSubSegments, number);
 }
 
 int main() {

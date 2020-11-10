@@ -23,18 +23,6 @@ void ClearStack(struct Stack* H) {
 	}
 }
 
-//Finding minimal number in sub-segment of K elements
-int MinInStack(struct Stack* Compare) {
-	int minimal = Compare->number;
-	Compare = Compare->Next;
-	while (Compare != NULL) {
-		if (minimal > Compare->number)
-			minimal = Compare->number;
-		Compare = Compare->Next;
-	}
-	return minimal;
-}
-
 //Main function on the work with the Stack
 void StackWorker(int n, int k, int *A) {
 	struct Stack* First = NULL, *Current = NULL, *Last = NULL, *MovingFirst = NULL;
@@ -44,8 +32,10 @@ void StackWorker(int n, int k, int *A) {
 	if (k == 1) {
 		for (counterStack = 0; counterStack < n; counterStack++)
 			printf_s("%d ", A[counterStack]);
+		free(A);
 		return;
 	}
+	struct Stack *MinFirst = NULL, * MinCurr = NULL, *MinLast = NULL;
 	for (int i = 0; i < n; i++) {
 		Current = malloc(sizeof(struct Stack));
 		Current->number = A[i];
@@ -61,14 +51,44 @@ void StackWorker(int n, int k, int *A) {
 		else {
 			Last->Next = Current;
 			Last = Current;
+			Current = First;
+			for (int j = 0; j < counterStack; j++) {
+				if (j < (counterStack / (k - 1)) * (k - 1))
+					Current = Current->Next;
+				else {
+					if (Last->number < Current->number)
+						Current->number = Last->number;
+					Current = Current->Next;
+				}
+			}
 			counterStack++;
 		}
 		//Compare if the count of elements in the Stack equals/above our number K
 		if (k <= counterStack) {
-			printf_s("%d ", MinInStack(MovingFirst));
+			if (i % (k - 1) == 0)
+				if (MinFirst != NULL) {
+					ClearStack(MinFirst);
+					MinFirst = NULL;
+				}
+			MinCurr = malloc(sizeof(struct Stack));
+			MinCurr->number = Last->number;
+			MinCurr->Next = NULL;
+			if (MinFirst == NULL) {
+				MinFirst = MinCurr;
+				MinLast = MinCurr;
+			}
+			else {
+				MinLast->Next = MinCurr;
+				if (MinLast->number < MinCurr->number)
+					MinCurr->number = MinLast->number;
+				MinLast = MinCurr;
+			}
+			printf_s("%d ", (MovingFirst->number < MinLast->number) ? MovingFirst->number : MinLast->number);
 			if(MovingFirst->Next)
 				MovingFirst = MovingFirst->Next;
 		}
 	}
+	free(A);
+	ClearStack(MinFirst);
 	ClearStack(First);
 }

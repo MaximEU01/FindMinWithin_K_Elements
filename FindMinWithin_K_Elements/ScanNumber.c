@@ -1,19 +1,5 @@
 //Extra function of getting the number
-
-#ifndef Array
-#define Array
-
-#include <stdio.h>
-#include <conio.h>
-#include <stdlib.h>
-#include <time.h>
-
-struct Stack {
-	int number;
-	struct Stack* Next;
-};
-
-#endif
+#include "Main.h"
 
 int ScanNumber(int topLimit) {
 	//Initialising the input number

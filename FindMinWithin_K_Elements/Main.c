@@ -8,7 +8,7 @@ Task:
 
 Restrictions:
 	Use stacks/queues;
-	Minimal passes through the array A.
+	Minimal passes through stacks/queues.
 
 Author: Maxim Uvarov (mix2013)
 
@@ -28,11 +28,10 @@ void InfoInput() {
 	printf_s("What is the length of sub-segments?\n");
 	lengthOfSubSegments = ScanNumber(arraySize);
 	int *number = malloc(sizeof(int)*arraySize);
-	//I used randomizer to fill the array A
-	printf_s("Your randomized array:\n");
+	//Filling up an array A
+	printf_s("Input %d numbers:\n", arraySize);
 	for (currentNumber = 0; currentNumber < arraySize; currentNumber++) {
-		number[currentNumber] = rand() % (MAXED - MINIM + 1) + MINIM;
-		printf_s("%d ", number[currentNumber]);
+		number[currentNumber] = ScanNumber(0);
 	}
 	StackWorker(arraySize, lengthOfSubSegments, number);
 }

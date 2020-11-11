@@ -1,15 +1,14 @@
 #pragma once
-#ifndef Array
-#define Array
+#ifndef ARRAY
+#define ARRAY
 
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
-#include <time.h>
 
-struct Stack {
+typedef struct List {
 	int number;
-	struct Stack* Next;
-};
+	struct List* next;
+} Stack;
 
 #endif

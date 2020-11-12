@@ -41,89 +41,96 @@ void makenull(Stack* S) {
 	}
 }
 
-//Main function on the work with the Stack
+//Main function on the work with the Stack (created by Maxim)
 void StackWorker(int arraySize, int lengthOfSubSegments, int *Array) {
-	//In - Temporary stack; MinS - Stack with numbers sorted from the start; MinF - Stack with numbers sorted from the end
-	Stack* In = NULL, * MinS = NULL, * MinF = NULL;
+	//TempStack - Temporary stack; MinFromStart - Stack with numbers sorted from the start; MinFromEnd - Stack with numbers sorted from the end
+	Stack* TempStack = NULL, * MinFromStart = NULL, * MinFromEnd = NULL;
 	int minF = 0;
 	printf_s("\nThe answer is:\n");
 	for (int i = 0; i < arraySize; i++) {
 		//For the case when k == 1
-		if (lengthOfSubSegments == 1) {
+		if (lengthOfSubSegments == 1)
 			printf_s("%d ", Array[i]);
-		}
 		else {
-			//
-			push(&In, Array[i]);
-			if (MinF == NULL) {
+			//Store in TempStack
+			push(&TempStack, Array[i]);
+			//First cycle
+			if (MinFromEnd == NULL) {
+				//Waiting until the end of the block
 				if (i % (lengthOfSubSegments - 1) == (lengthOfSubSegments - 2))
-					while (top(In) >= 0) {
-						minF = pop(&In);
-						if (top(MinF) >= 0)
-							minF = min(minF, top(MinF));
-						push(&MinF, minF);
+					//Fill up MinFromEnd while emptying TempStack
+					while (top(TempStack) >= 0) {
+						minF = pop(&TempStack);
+						if (top(MinFromEnd) >= 0)
+							minF = min(minF, top(MinFromEnd));
+						push(&MinFromEnd, minF);
 					}
 			}
 			else {
-				minF = top(In);
-				if (top(MinS) >= 0)
-					minF = min(minF, top(MinS));
-				push(&MinS, minF);
-				minF = pop(&MinF);
-				printf_s("%d ", (top(MinS) < minF) ? top(MinS) : minF);
-				if (top(MinF) < 0)
-					while (top(In) >= 0) {
-						if(top(MinS) >= 0)
-							minF = pop(&MinS);
-						minF = pop(&In);
-						if (top(MinF) >= 0)
-							minF = min(minF, top(MinF));
-						push(&MinF, minF);
+				//Process of adding number from TempStack to MinFromStart
+				minF = top(TempStack);
+				if (top(MinFromStart) >= 0)
+					minF = min(minF, top(MinFromStart));
+				push(&MinFromStart, minF);
+				//Outputting minimal between top numbers from Stacks MinFromStart & MinFromEnd
+				minF = pop(&MinFromEnd);
+				printf_s("%d ", (top(MinFromStart) < minF) ? top(MinFromStart) : minF);
+				//Fill up Stack MinFromEnd if empty (parallel process: emptying Stack MinFromStart)
+				if (top(MinFromEnd) < 0)
+					while (top(TempStack) >= 0) {
+						if(top(MinFromStart) >= 0)
+							minF = pop(&MinFromStart);
+						minF = pop(&TempStack);
+						if (top(MinFromEnd) >= 0)
+							minF = min(minF, top(MinFromEnd));
+						push(&MinFromEnd, minF);
 					}
 			}
 		}
 	}
-	if (top(In) >= 0)
-		makenull(In);
-	if (top(MinF) >= 0)
-		makenull(MinF);
-	if (top(MinS) >= 0)
-		makenull(MinS);
-	free(Array);
+	if (top(TempStack) >= 0) makenull(TempStack);
+	if (top(MinFromEnd) >= 0) makenull(MinFromEnd);
+	if (top(MinFromStart) >= 0) makenull(MinFromStart);
+	//free(Array); //Uncomment if 2nd function is not being used
 }
 
-
-/*
-Code_by_dad
-
+//Main function on the work with the Stack (created by Maxim's father)
 void StackWorker2(int arraySize, int lengthOfSubSegments, int* Array) {
-	Stack* B = NULL, * C = NULL, * Temp = NULL;
-
-	for (int i = 0; i < arraySize; i++)
-	{
-		printf_s("\n%d ", i);
-		//положить в стек Б минимум из него и нового элемента
-		push(&B, min(Array[i], top(B)));
-
-		//положить в стек Врем новый элемент
-		push(&Temp, Array[i]);
-
-		if (i % (2 * (lengthOfSubSegments - 1)) || i == (arraySize - 1))
-		{
-
-			//на основании стека Врем создаем стек С с очисткой стека Врем
-			while (top(Temp) >= 0) {
-				printf_s("While %d ", i);
-				if (top(C) >= 0)
-					push(&C, min(pop(&Temp), top(C)));
-				else
-					push(&C, pop(&Temp));
+	Stack* MinFromEnd = NULL, * Temp = NULL;
+	int minFromStart = 0;
+	printf_s("\nThe answer is:\n");
+	for (int i = 0; i < arraySize; i++) {
+		//For the case when k == 1
+		if (lengthOfSubSegments == 1)
+			printf_s("%d ", Array[i]);
+		else {
+			if (i % (lengthOfSubSegments - 1) == 0)
+				minFromStart = Array[i];
+			else
+				minFromStart = min(Array[i], minFromStart);
+			//Putting new number in Stack Temp
+			push(&Temp, Array[i]);
+			//Outputting minimal of number minFromStart and the number pulled out of Stack MinFromEnd
+			if ((i + 1) >= lengthOfSubSegments) {
+				printf_s("%d ", min(minFromStart, top(MinFromEnd)));
+				pop(&MinFromEnd);
 			}
-
-			//выводим минимумы по стекам Б и С с их очисткой
-			while (top(C) >= 0)
-				printf_s("Ans %d ", min(pop(&B), pop(&C)));
+			if ((i + 1) % (lengthOfSubSegments - 1) == 0 || i == (arraySize - 1)) {
+				//Filling up Stack MinFromEnd with the number pulled out of Stack Temp
+				while (top(Temp) >= 0) {
+					if (top(MinFromEnd) >= 0) {
+						push(&MinFromEnd, min(top(Temp), top(MinFromEnd)));
+						pop(&Temp);
+					}
+					else
+						push(&MinFromEnd, pop(&Temp));
+				}
+			}
 		}
 	}
+	if (top(MinFromEnd) >= 0)
+		makenull(MinFromEnd);
+	if (top(Temp) >= 0)
+		makenull(Temp);
+	free(Array);
 }
-*/

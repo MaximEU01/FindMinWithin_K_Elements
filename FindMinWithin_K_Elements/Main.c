@@ -14,9 +14,6 @@ Author: Maxim Uvarov (mix2013)
 
 */
 
-#define MINIM 1
-#define MAXED 9
-
 //Writing out starting words & getting info
 void InfoInput() {
 	int arraySize, lengthOfSubSegments, currentNumber;
@@ -33,7 +30,10 @@ void InfoInput() {
 	for (currentNumber = 0; currentNumber < arraySize; currentNumber++) {
 		number[currentNumber] = ScanNumber(0);
 	}
+	printf_s("\nMethod 1.");
 	StackWorker(arraySize, lengthOfSubSegments, number);
+	printf_s("\n\nMethod 2.");
+	StackWorker2(arraySize, lengthOfSubSegments, number);
 }
 
 int main() {

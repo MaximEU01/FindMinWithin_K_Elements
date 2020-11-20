@@ -14,29 +14,35 @@ Author: Maxim Uvarov (mix2013)
 
 */
 
-//Writing out starting words & getting info
-void InfoInput() {
-	int arraySize, lengthOfSubSegments, currentNumber;
+#include "Main.h"
+
+//Main function on the work with the Stack
+int StackWorker(int, int, int*);
+//Function of manual input of natural number
+int ScanNumber(int);
+
+int main() {
 	printf_s("Program name: FindMinWithin_K_Elements\n\n");
 	//Inputting number N
 	printf_s("How many natural numbers will be in the array?\n");
-	arraySize = ScanNumber(0);
+	int arraySize = ScanNumber(0);
 	//Inputting number K
 	printf_s("What is the length of sub-segments?\n");
-	lengthOfSubSegments = ScanNumber(arraySize);
-	int *number = malloc(sizeof(int)*arraySize);
+	int lengthOfSubSegments = ScanNumber(arraySize);
+	int* Array = (int*)malloc(sizeof(int) * arraySize);
 	//Filling up an array A
 	printf_s("Input %d numbers:\n", arraySize);
-	for (currentNumber = 0; currentNumber < arraySize; currentNumber++) {
-		number[currentNumber] = ScanNumber(0);
-	}
+	for (int currentNumber = 0; currentNumber < arraySize; currentNumber++)
+		Array[currentNumber] = ScanNumber(0);
 	printf_s("\nMethod 1.");
-	StackWorker(arraySize, lengthOfSubSegments, number);
+	printf_s("\nThe answer is:\n");
+	if (StackWorker(arraySize, lengthOfSubSegments, Array) < 0)
+		return -10;
+	/*
 	printf_s("\n\nMethod 2.");
-	StackWorker2(arraySize, lengthOfSubSegments, number);
-}
-
-int main() {
-	InfoInput();
+	printf_s("\nThe answer is:\n");
+	StackWorker2(arraySize, lengthOfSubSegments, Array);
+	*/
+	free(Array);
 	return 0;
 }

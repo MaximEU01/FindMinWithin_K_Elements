@@ -1,9 +1,8 @@
 #pragma once
-#ifndef STACK
-#define STACK
-
 #include <stdio.h>
-#include <conio.h>
 #include <stdlib.h>
 
-#endif
+//Main function on the work with the Stack
+int StackWorker(int, int, int*);
+//Function of manual input of natural number
+int ScanNumber(int);

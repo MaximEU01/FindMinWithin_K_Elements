@@ -1,5 +1,4 @@
-#include "StackCommands.h"
-#define PUSH_ERROR -100
+#include "StackCompiler.h"
 
 //Compare 2 natural numbers (or return 1st number if 2nd number is '-1')
 int Compare(int numA, int numB) {
@@ -14,6 +13,7 @@ int StackWorker(int arraySize, int lengthOfSubSegments, int *Array) {
 	//MinFromStart - Stack with numbers sorted from the start
 	//MinFromEnd - Stack with numbers sorted from the end
 	Stack* TempStack = NULL, * MinFromStart = NULL, * MinFromEnd = NULL;
+	int minimal;
 	for (int i = 0; i < arraySize; i++) {
 		//For the case when k == 1
 		if (lengthOfSubSegments == 1)
@@ -27,22 +27,27 @@ int StackWorker(int arraySize, int lengthOfSubSegments, int *Array) {
 				//Waiting until the end of the block
 				if (i == lengthOfSubSegments - 2)
 					//Fill up MinFromEnd while emptying TempStack
-					while (top(TempStack) >= 0)
-						if (!(push(&MinFromEnd, Compare(pop(&TempStack), top(MinFromEnd)))))
+					while (top(TempStack) >= 0) {
+						minimal = Compare(pop(&TempStack), top(MinFromEnd));
+						if (!(push(&MinFromEnd, minimal)))
 							return PUSH_ERROR;
+					}
 			}
 			else {
 				//Adding number from TempStack to MinFromStart
-				if (!(push(&MinFromStart, Compare(top(TempStack), top(MinFromStart)))))
+				minimal = Compare(top(TempStack), top(MinFromStart));
+				if (!(push(&MinFromStart, minimal)))
 					return PUSH_ERROR;
 				//Outputting minimal between top numbers from Stacks MinFromStart & MinFromEnd
-				printf_s("%d ", Compare(pop(&MinFromEnd), top(MinFromStart)));
+				minimal = Compare(pop(&MinFromEnd), top(MinFromStart));
+				printf_s("%d ", minimal);
 				//Fill up Stack MinFromEnd if empty (parallel process: emptying Stack MinFromStart)
 				if (top(MinFromEnd) < 0) {
 					clear(MinFromStart);
 					MinFromStart = NULL;
 					while (top(TempStack) >= 0) {
-						if (!(push(&MinFromEnd, Compare(pop(&TempStack), top(MinFromEnd)))))
+						minimal = Compare(pop(&TempStack), top(MinFromEnd));
+						if (!(push(&MinFromEnd, minimal)))
 							return PUSH_ERROR;
 					}
 				}

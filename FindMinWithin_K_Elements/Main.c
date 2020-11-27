@@ -16,13 +16,8 @@ Author: Maxim Uvarov (mix2013)
 
 #include "Main.h"
 
-//Main function on the work with the Stack
-int StackWorker(int, int, int*);
-//Function of manual input of natural number
-int ScanNumber(int);
-
 int main() {
-	printf_s("Program name: FindMinWithin_K_Elements\n\n");
+	printf_s("Program name: Finding Minimum Within K Elements\n\n");
 	//Inputting number N
 	printf_s("How many natural numbers will be in the array?\n");
 	int arraySize = ScanNumber(0);
@@ -37,7 +32,7 @@ int main() {
 	printf_s("\nMethod 1.");
 	printf_s("\nThe answer is:\n");
 	if (StackWorker(arraySize, lengthOfSubSegments, Array) < 0)
-		return -10;
+		return -100;
 	/*
 	printf_s("\n\nMethod 2.");
 	printf_s("\nThe answer is:\n");

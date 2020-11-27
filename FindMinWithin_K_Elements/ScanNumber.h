@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 //Check if the number is not natural
-int NaturalCheck(int);
+int static NaturalCheck(int);
 
 //Check if the number is not in specified range
-int RangeCheck(int, int);
+int static RangeCheck(int, int);

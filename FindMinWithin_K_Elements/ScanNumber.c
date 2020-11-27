@@ -1,7 +1,7 @@
 #include "ScanNumber.h"
 
 //Check if the number is not natural
-int NaturalCheck(int number) {
+int static NaturalCheck(int number) {
 	if (number <= 0) {
 		printf_s("I accept only natural numbers, please try again...\n");
 		return 0;
@@ -10,7 +10,7 @@ int NaturalCheck(int number) {
 }
 
 //Check if the number is not in specified range
-int RangeCheck(int number, int topLim) {
+int static RangeCheck(int number, int topLim) {
 	if (topLim < number) {
 		printf_s("Number must be in range [1; %d], please try again...\n", topLim);
 		return 0;
